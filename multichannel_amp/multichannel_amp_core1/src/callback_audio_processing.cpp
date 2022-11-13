@@ -225,7 +225,7 @@ void processaudio_setup(void) {
 #pragma optimize_for_speed
 void processaudio_callback(void) {
 
-	if (true) {
+	if (false) {
 
 		// Copy incoming audio buffers to the effects input buffers
 		copy_buffer(audiochannel_0_left_in, audio_effects_left_in,
@@ -253,8 +253,8 @@ void processaudio_callback(void) {
 
 		// Default: Pass audio just from 1/8" (or 1/4" on Audio Project Fin) inputs to outputs
 
-		audiochannel_0_left_out[i] = audiochannel_0_left_in[i];
-		audiochannel_0_right_out[i] = audiochannel_0_right_in[i];
+		audiochannel_0_left_out[i] = audiochannel_spdif_0_left_in[i];
+		audiochannel_0_right_out[i] = audiochannel_spdif_0_right_in[i];
 
 		/* Below are some additional examples of how to receive audio from the various input buffers
 
