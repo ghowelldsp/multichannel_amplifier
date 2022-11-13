@@ -268,6 +268,10 @@ void audioframework_initialize(void) {
     // Configure SPDIF to connect to SPORT2.  Divide the fs
     sru_config_spdif(4);
 
+    log_event(EVENT_INFO, "Configuring the Multichannel Amplifier");
+
+    // Initialise multichannel amplifier
+    sru_config_sharc_sam_ma12040p_slave();
     log_event(EVENT_INFO, "Configuring the ADAU1761");
     // Initialize the ADAU1761 which is connected to TWI0 as a master
     #if USE_ENHANCED_ADAU1761_DRIVER
