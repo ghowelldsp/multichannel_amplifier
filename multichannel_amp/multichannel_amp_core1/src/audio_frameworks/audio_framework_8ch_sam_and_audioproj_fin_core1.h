@@ -120,6 +120,10 @@ extern float *audiochannel_spdif_0_right_in;
 extern float *audiochannel_spdif_0_left_out;
 extern float *audiochannel_spdif_0_right_out;
 
+// MA12040P Outputs
+extern float *audiochannel_ma12040p_0_left_out;
+extern float *audiochannel_ma12040p_0_right_out;
+
 #if (USE_BOTH_CORES_TO_PROCESS_AUDIO)
 
 // Processed audio data from SHARC Core 2

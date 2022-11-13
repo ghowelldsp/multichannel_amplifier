@@ -35,6 +35,8 @@
 #include "callback_audio_processing.h"
 #include "callback_midi_message.h"
 
+#include "multichannel_amp_drivers/multichannel_amp.h"
+
 /**
  * If you want to use command program arguments, then place them in the following string.
  */
@@ -131,6 +133,9 @@ int main(void){
     while (!multicore_data->sharc_core1_processing_audio)
         continue;
     log_event(EVENT_INFO, "Audio DMA is running!");
+
+    // unmute mulichannel amps
+    McAmp_Unmute();
 
     // Wait for audio block interrupts
     while (1) {

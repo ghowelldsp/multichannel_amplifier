@@ -37,6 +37,7 @@ typedef enum
 /*------------------- GLOBAL FUNCTION PROTOTYPES -----------------*/
 
 MCAMP_STATUS McAmp_Initialise(void);
+MCAMP_STATUS McAmp_Unmute(void);
 
 #ifdef __cplusplus
 }

@@ -14,6 +14,7 @@
 
 #include "ma12040p_driver.h"
 
+#include <sruSC589.h>
 #include "drivers/bm_twi_driver/bm_twi.h"
 #include "drivers/bm_event_logging_driver/bm_event_logging.h"
 
@@ -72,6 +73,21 @@ MCAMP_STATUS McAmp_Initialise(void)
 	{
 		log_event(EVENT_INFO, "   McAmp: No MA12040P devices connected.");
 	}
+
+	return MCAMP_SUCCESS;
+}
+
+/**
+ * @brief Initialises the MA12040P I2C connection
+ *
+ * @param   ma12040p_config  MA12040P configuration structure
+ *
+ * @return  MA12040P status
+ */
+MCAMP_STATUS McAmp_Unmute(void)
+{
+	SRU2(HIGH, DAI1_PB05_I);
+	log_event(EVENT_INFO, "McAmp: Amp's Unmuted");
 
 	return MCAMP_SUCCESS;
 }
