@@ -53,6 +53,9 @@
 #include "../callback_midi_message.h"
 #include "../callback_pushbuttons.h"
 
+// multichannel amp
+#include "multichannel_amp_drivers/multichannel_amp.h"
+
 //*****************************************************************************
 // A2B Configuration
 //*****************************************************************************
@@ -272,6 +275,8 @@ void audioframework_initialize(void) {
 
     // Initialise multichannel amplifier
     sru_config_sharc_sam_ma12040p_slave();
+    McAmp_Initialise();
+
     log_event(EVENT_INFO, "Configuring the ADAU1761");
     // Initialize the ADAU1761 which is connected to TWI0 as a master
     #if USE_ENHANCED_ADAU1761_DRIVER

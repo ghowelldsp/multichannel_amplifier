@@ -44,6 +44,11 @@
 			<type>2</type>
 			<locationURI>PARENT-1-PROJECT_LOC/drivers</locationURI>
 		</link>
+		<link>
+			<name>src/multichannel_amp_drivers</name>
+			<type>2</type>
+			<locationURI>PARENT-1-PROJECT_LOC/multichannel_amp_drivers</locationURI>
+		</link>
 	</linkedResources>
 	<variableList>
 		<variable>
