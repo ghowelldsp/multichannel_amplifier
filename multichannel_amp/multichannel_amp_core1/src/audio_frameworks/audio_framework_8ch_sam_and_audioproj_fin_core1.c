@@ -270,18 +270,20 @@ SPORT_DMA_CONFIG SPR4_MA12040P_2CH_Config = {
     .dma_rx_buffer_1     	= sport4_dma_rx_1_buffer,
 
      // SPORT A Transmit
-    .pREG_SPORT_CTL_A    	= (0x17 << BITP_SPORT_CTL_A_SLEN) |		// 32-bit data word
+    .pREG_SPORT_CTL_A    	= (0x1f << BITP_SPORT_CTL_A_SLEN) |		// 32-bit data word
 							  BITM_SPORT_CTL_B_CKRE |
     						  BITM_SPORT_CTL_A_OPMODE |   	// I2S mode
+							  BITM_SPORT_CTL_A_LAFS |       // Left-Justified Mode
 							  BITM_SPORT_CTL_A_SPTRAN |     // SPORT is transmitter
 							  0,
 
     .pREG_SPORT_MCTL_A  	= 0,
 
     // SPORT B Receive
-	.pREG_SPORT_CTL_B    	= (0x17 << BITP_SPORT_CTL_B_SLEN) |		// 32-bit data word
+	.pREG_SPORT_CTL_B    	= (0x1f << BITP_SPORT_CTL_B_SLEN) |		// 32-bit data word
 							  BITM_SPORT_CTL_B_CKRE |
 							  BITM_SPORT_CTL_B_OPMODE |   	// I2S mode
+							  BITM_SPORT_CTL_B_LAFS |       // Left-Justified Mode
 							  BITM_SPORT_CTL_B_SPTRAN |     // SPORT is transmitter
 							  0,
 
