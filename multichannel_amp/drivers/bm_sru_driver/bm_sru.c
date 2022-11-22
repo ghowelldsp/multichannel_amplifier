@@ -563,4 +563,12 @@ void sru_config_sharc_sam_ma12040p_slave(void) {
     SRU2(PCG0_FSC_O, DAI1_PB02_I);  		// route PCG0 FSC cross domain output to MA12040P WS
     SRU2(SPT4_AD0_O, DAI1_PB11_I);    		// route SPT4A AD0 output to MA12040P Data pin
 
+    /*
+     *
+     */
+
+    // enable outputs
+    SRU2(HIGH, DAI1_PBEN12_I);        	// MA12040P DATA = output
+    SRU2(SPT4_AD1_O, DAI1_PB12_I);    	// route SPT4A AD0 output to MA12040P Data pin
+
 }

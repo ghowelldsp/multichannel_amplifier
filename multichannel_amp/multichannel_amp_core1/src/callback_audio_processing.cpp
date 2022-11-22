@@ -259,6 +259,9 @@ void processaudio_callback(void) {
 		audiochannel_ma12040p_0_left_out[i] = audiochannel_spdif_0_left_in[i];
 		audiochannel_ma12040p_0_right_out[i] = audiochannel_spdif_0_right_in[i];
 
+		audiochannel_ma12040p_1_left_out[i] = audiochannel_spdif_0_left_in[i];
+		audiochannel_ma12040p_1_right_out[i] = audiochannel_spdif_0_right_in[i];
+
 		/* Below are some additional examples of how to receive audio from the various input buffers
 
 		 // Example: Pass audio just from 1/8" (or 1/4" on Audio Project Fin) inputs to outputs

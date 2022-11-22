@@ -123,6 +123,8 @@ extern float *audiochannel_spdif_0_right_out;
 // MA12040P Outputs
 extern float *audiochannel_ma12040p_0_left_out;
 extern float *audiochannel_ma12040p_0_right_out;
+extern float *audiochannel_ma12040p_1_left_out;
+extern float *audiochannel_ma12040p_1_right_out;
 
 #if (USE_BOTH_CORES_TO_PROCESS_AUDIO)
 

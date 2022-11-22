@@ -59,7 +59,7 @@ void audioframework_audiocallback_handler(uint32_t iid);
 #define     AUDIO_CHANNELS_MASK        		(0xFF)
 #define     SPDIF_DMA_CHANNELS         		(2)
 #define     SPDIF_DMA_CHANNEL_MASK     		(0x3)
-#define     MA12040P_AUDIO_CHANNELS     	(2)
+#define     MA12040P_AUDIO_CHANNELS     	(4)
 #define     MA12040P_AUDIO_CHANNELS_MASK   	(0xFF)
 
 #pragma alignment_region(64)
@@ -166,7 +166,9 @@ float *audiochannel_spdif_0_right_out = spdif_audiochannels_out + AUDIO_BLOCK_SI
 
 // MA12040P Outputs
 float *audiochannel_ma12040p_0_left_out  = ma12040p_audiochannels_out + AUDIO_BLOCK_SIZE * 0;
-float *audiochannel_ma12040p_0_right_out = ma12040p_audiochannels_out + AUDIO_BLOCK_SIZE * 1;
+float *audiochannel_ma12040p_1_left_out  = ma12040p_audiochannels_out + AUDIO_BLOCK_SIZE * 1;
+float *audiochannel_ma12040p_0_right_out = ma12040p_audiochannels_out + AUDIO_BLOCK_SIZE * 2;
+float *audiochannel_ma12040p_1_right_out = ma12040p_audiochannels_out + AUDIO_BLOCK_SIZE * 3;
 
 // A2B Audio In (from the A2B bus)
 float *audiochannel_a2b_0_left_in  = a2b_audiochannels_in + AUDIO_BLOCK_SIZE * 0;
@@ -809,7 +811,7 @@ void audioframework_start() {
     SPORT_ENABLE(0, B, 0, 1);
 
     // Enable SPORT4 for MA12040P
-	SPORT_ENABLE(4, A, 0, 1);
+	SPORT_ENABLE(4, A, 1, 1);
 	SPORT_ENABLE(4, B, 0, 1);
 }
 
