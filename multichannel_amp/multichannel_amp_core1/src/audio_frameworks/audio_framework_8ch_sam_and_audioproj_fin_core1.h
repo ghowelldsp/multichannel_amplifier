@@ -125,6 +125,10 @@ extern float *audiochannel_ma12040p_0_left_out;
 extern float *audiochannel_ma12040p_0_right_out;
 extern float *audiochannel_ma12040p_1_left_out;
 extern float *audiochannel_ma12040p_1_right_out;
+extern float *audiochannel_ma12040p_2_left_out;
+extern float *audiochannel_ma12040p_2_right_out;
+extern float *audiochannel_ma12040p_3_left_out;
+extern float *audiochannel_ma12040p_3_right_out;
 
 #if (USE_BOTH_CORES_TO_PROCESS_AUDIO)
 

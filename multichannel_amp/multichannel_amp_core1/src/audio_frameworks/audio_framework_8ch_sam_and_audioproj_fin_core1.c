@@ -118,7 +118,8 @@ float a2b_audiochannels_in[AUDIO_CHANNELS * AUDIO_BLOCK_SIZE] = {0};         // 
 float spdif_audiochannels_out[SPDIF_DMA_CHANNELS * AUDIO_BLOCK_SIZE] = {0};    // Audio to SPDIF TX
 float spdif_audiochannels_in[SPDIF_DMA_CHANNELS * AUDIO_BLOCK_SIZE] = {0};      // Audio from SPDIF RX
 
-float ma12040p_audiochannels_out[MA12040P_AUDIO_CHANNELS * AUDIO_BLOCK_SIZE] = {0};    // Audio to MA12040P
+float ma12040p_audiochannels_out_SPTA[MA12040P_AUDIO_CHANNELS * AUDIO_BLOCK_SIZE] = {0};    // Audio to MA12040P
+float ma12040p_audiochannels_out_SPTB[MA12040P_AUDIO_CHANNELS * AUDIO_BLOCK_SIZE] = {0};    // Audio to MA12040P
 
 #if (USE_BOTH_CORES_TO_PROCESS_AUDIO)
 float audiochannels_from_sharc_core2[AUDIO_CHANNELS * AUDIO_BLOCK_SIZE] = {0};      // Audio from SHARC Core 2
@@ -165,10 +166,15 @@ float *audiochannel_spdif_0_left_out  = spdif_audiochannels_out + AUDIO_BLOCK_SI
 float *audiochannel_spdif_0_right_out = spdif_audiochannels_out + AUDIO_BLOCK_SIZE * 1;
 
 // MA12040P Outputs
-float *audiochannel_ma12040p_0_left_out  = ma12040p_audiochannels_out + AUDIO_BLOCK_SIZE * 0;
-float *audiochannel_ma12040p_1_left_out  = ma12040p_audiochannels_out + AUDIO_BLOCK_SIZE * 1;
-float *audiochannel_ma12040p_0_right_out = ma12040p_audiochannels_out + AUDIO_BLOCK_SIZE * 2;
-float *audiochannel_ma12040p_1_right_out = ma12040p_audiochannels_out + AUDIO_BLOCK_SIZE * 3;
+float *audiochannel_ma12040p_0_left_out  = ma12040p_audiochannels_out_SPTA + AUDIO_BLOCK_SIZE * 0;
+float *audiochannel_ma12040p_1_left_out  = ma12040p_audiochannels_out_SPTA + AUDIO_BLOCK_SIZE * 1;
+float *audiochannel_ma12040p_0_right_out = ma12040p_audiochannels_out_SPTA + AUDIO_BLOCK_SIZE * 2;
+float *audiochannel_ma12040p_1_right_out = ma12040p_audiochannels_out_SPTA + AUDIO_BLOCK_SIZE * 3;
+
+float *audiochannel_ma12040p_2_left_out  = ma12040p_audiochannels_out_SPTB + AUDIO_BLOCK_SIZE * 0;
+float *audiochannel_ma12040p_3_left_out  = ma12040p_audiochannels_out_SPTB + AUDIO_BLOCK_SIZE * 1;
+float *audiochannel_ma12040p_2_right_out = ma12040p_audiochannels_out_SPTB + AUDIO_BLOCK_SIZE * 2;
+float *audiochannel_ma12040p_3_right_out = ma12040p_audiochannels_out_SPTB + AUDIO_BLOCK_SIZE * 3;
 
 // A2B Audio In (from the A2B bus)
 float *audiochannel_a2b_0_left_in  = a2b_audiochannels_in + AUDIO_BLOCK_SIZE * 0;
@@ -273,7 +279,7 @@ SPORT_DMA_CONFIG SPR4_MA12040P_2CH_Config = {
 
      // SPORT A Transmit
     .pREG_SPORT_CTL_A    	= (0x1f << BITP_SPORT_CTL_A_SLEN) |		// 32-bit data word
-							  BITM_SPORT_CTL_B_CKRE |
+							  BITM_SPORT_CTL_A_CKRE |
     						  BITM_SPORT_CTL_A_OPMODE |   	// I2S mode
 							  BITM_SPORT_CTL_A_LAFS |       // Left-Justified Mode
 							  BITM_SPORT_CTL_A_SPTRAN |     // SPORT is transmitter
@@ -567,7 +573,8 @@ void audioframework_dma_handler(uint32_t iid, void *arg){
         audioflow_fixed_to_float(sport2_dma_rx_0_buffer, spdif_audiochannels_in, SPDIF_DMA_CHANNELS * AUDIO_BLOCK_SIZE);
 
         // Audio to MA12049P
-		audioflow_float_to_fixed(ma12040p_audiochannels_out, sport4_dma_tx_0_buffer, MA12040P_AUDIO_CHANNELS * AUDIO_BLOCK_SIZE);
+		audioflow_float_to_fixed(ma12040p_audiochannels_out_SPTA, sport4_dma_tx_0_buffer, MA12040P_AUDIO_CHANNELS * AUDIO_BLOCK_SIZE);
+		audioflow_float_to_fixed(ma12040p_audiochannels_out_SPTB, sport4_dma_rx_0_buffer, MA12040P_AUDIO_CHANNELS * AUDIO_BLOCK_SIZE);
     }
     else
     {
@@ -584,7 +591,8 @@ void audioframework_dma_handler(uint32_t iid, void *arg){
         audioflow_fixed_to_float(sport2_dma_rx_1_buffer, spdif_audiochannels_in, SPDIF_DMA_CHANNELS * AUDIO_BLOCK_SIZE);
 
         // Audio to MA12049P
-		audioflow_float_to_fixed(ma12040p_audiochannels_out, sport4_dma_tx_1_buffer, MA12040P_AUDIO_CHANNELS * AUDIO_BLOCK_SIZE);
+		audioflow_float_to_fixed(ma12040p_audiochannels_out_SPTA, sport4_dma_tx_1_buffer, MA12040P_AUDIO_CHANNELS * AUDIO_BLOCK_SIZE);
+		audioflow_float_to_fixed(ma12040p_audiochannels_out_SPTB, sport4_dma_rx_1_buffer, MA12040P_AUDIO_CHANNELS * AUDIO_BLOCK_SIZE);
     }
 
     #if (USE_BOTH_CORES_TO_PROCESS_AUDIO)
@@ -812,7 +820,7 @@ void audioframework_start() {
 
     // Enable SPORT4 for MA12040P
 	SPORT_ENABLE(4, A, 1, 1);
-	SPORT_ENABLE(4, B, 0, 1);
+	SPORT_ENABLE(4, B, 1, 1);
 }
 
 #endif  // AUDIO_FRAMEWORK_8CH_SAM_AND_AUDIOPROJ_FIN

@@ -392,7 +392,7 @@ DMA_INIT_RESULT audioflow_init_sport_dma(SPORT_DMA_CONFIG *sport_dma_cfg) {
             *pREG_DMA11_YMOD = calculate_dma_ymod(sport_dma_cfg->dma_audio_rx_channels, sport_dma_cfg->dma_audio_block_size);
 
             *pREG_DMA10_CFG = DMA_TX_Config | (4 << BITP_DMA_CFG_FLOW);   //descriptor list mode = 4
-            *pREG_DMA11_CFG = DMA_RX_Config | (4 << BITP_DMA_CFG_FLOW);
+            *pREG_DMA11_CFG = DMA_TX_Config | (4 << BITP_DMA_CFG_FLOW);
 
             // Transmit
             *pREG_SPORT4_CTL_A  = sport_dma_cfg->pREG_SPORT_CTL_A;
