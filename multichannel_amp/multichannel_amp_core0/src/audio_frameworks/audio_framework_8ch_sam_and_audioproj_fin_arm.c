@@ -271,12 +271,6 @@ void audioframework_initialize(void) {
     // Configure SPDIF to connect to SPORT2.  Divide the fs
     sru_config_spdif(4);
 
-    log_event(EVENT_INFO, "Configuring the Multichannel Amplifier");
-
-    // Initialise multichannel amplifier
-    sru_config_sharc_sam_ma12040p_slave();
-    McAmp_Initialise();
-
     log_event(EVENT_INFO, "Configuring the ADAU1761");
     // Initialize the ADAU1761 which is connected to TWI0 as a master
     #if USE_ENHANCED_ADAU1761_DRIVER
@@ -373,6 +367,16 @@ void audioframework_initialize(void) {
     adau_write_ctrl_reg(&adau1761_local, ADAU1761_REG_REC_MIXER_RIGHT_1, currentRegVal);
 
     log_event(EVENT_INFO, "  ADAU1761 updated gain settings for the Audio Project Fin being used");
+
+    log_event(EVENT_INFO, "Configuring the Multichannel Amplifier");
+
+	/*
+	 *  Initialise multichannel amplifier
+	 */
+    log_event(EVENT_INFO, "Configuring the Multichannel Amplifier");
+	sru_config_multichannel_amps();
+	McAmp_Initialise();
+
     log_event(EVENT_INFO, "  Complete");
     // Set up SRU to bypass the processor and route I2S from A2B to the ADAU1761
     // In this config, the ADAU1761 will be initialized from a remote master node
