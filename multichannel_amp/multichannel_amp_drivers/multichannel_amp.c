@@ -54,9 +54,23 @@ MCAMP_STATUS McAmp_Initialise(void)
 	{
 		log_event(EVENT_INFO, "   McAmp: I2C Setup Success");
 	}
-	sprintf(message, "   McAmp: I2C Config, Bus: %d, Addr: 0x%.2x, Speed: %'.3f KHz",
+	sprintf(message, "   McAmp: I2C Config, Bus: %d, Addr: 0x%.2x, Speed: %.3f KHz",
 			TWI2, MCAMP_I2C_MUX_DEV_ADDR, (double)MCAMP_I2C_SPEED / 1000.0);
 	log_event(EVENT_INFO, message);
+
+	return MCAMP_SUCCESS;
+}
+
+/**
+ * @brief Checks the devices on the I2C bus
+ *
+ * @param   ma12040p_config  MA12040P configuration structure
+ *
+ * @return  MA12040P status
+ */
+MCAMP_STATUS McAmp_Device_Check(void)
+{
+	char message[128];
 
 	// check i2c mux busses for ma12040p devices present
 	uint8_t busIdx;
@@ -84,10 +98,10 @@ MCAMP_STATUS McAmp_Initialise(void)
  *
  * @return  MA12040P status
  */
-MCAMP_STATUS McAmp_Unmute(void)
+MCAMP_STATUS McAmp_Enable(void)
 {
-	SRU2(HIGH, DAI1_PB05_I);
-	log_event(EVENT_INFO, "McAmp: Amp's Unmuted");
+	SRU2(LOW, DAI1_PB14_I);
+	log_event(EVENT_INFO, "McAmp: Amp's Enabled");
 
 	return MCAMP_SUCCESS;
 }

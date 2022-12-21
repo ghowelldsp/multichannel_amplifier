@@ -120,15 +120,27 @@ extern float *audiochannel_spdif_0_right_in;
 extern float *audiochannel_spdif_0_left_out;
 extern float *audiochannel_spdif_0_right_out;
 
-// MA12040P Outputs
-extern float *audiochannel_ma12040p_0_left_out;
-extern float *audiochannel_ma12040p_0_right_out;
-extern float *audiochannel_ma12040p_1_left_out;
-extern float *audiochannel_ma12040p_1_right_out;
-extern float *audiochannel_ma12040p_2_left_out;
-extern float *audiochannel_ma12040p_2_right_out;
-extern float *audiochannel_ma12040p_3_left_out;
-extern float *audiochannel_ma12040p_3_right_out;
+// Multichannel Amp Outputs
+extern float *mcamp_ch0;
+extern float *mcamp_ch1;
+extern float *mcamp_ch2;
+extern float *mcamp_ch3;
+extern float *mcamp_ch4;
+extern float *mcamp_ch5;
+extern float *mcamp_ch6;
+extern float *mcamp_ch7;
+extern float *mcamp_ch8;
+extern float *mcamp_ch9;
+extern float *mcamp_ch10;
+extern float *mcamp_ch11;
+extern float *mcamp_ch12;
+extern float *mcamp_ch13;
+extern float *mcamp_ch14;
+extern float *mcamp_ch15;
+extern float *mcamp_ch16;
+extern float *mcamp_ch17;
+extern float *mcamp_ch18;
+extern float *mcamp_ch19;
 
 #if (USE_BOTH_CORES_TO_PROCESS_AUDIO)
 

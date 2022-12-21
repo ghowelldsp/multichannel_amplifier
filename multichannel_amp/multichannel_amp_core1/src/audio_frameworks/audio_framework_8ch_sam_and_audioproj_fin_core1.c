@@ -55,24 +55,71 @@ void audioframework_dma_handler(uint32_t iid, void *arg);
 void audioframework_audiocallback_handler(uint32_t iid);
 
 // Definitions for this specific framework
-#define     AUDIO_CHANNELS             		(8)
-#define     AUDIO_CHANNELS_MASK        		(0xFF)
-#define     SPDIF_DMA_CHANNELS         		(2)
-#define     SPDIF_DMA_CHANNEL_MASK     		(0x3)
-#define     MA12040P_AUDIO_CHANNELS     	(4)
-#define     MA12040P_AUDIO_CHANNELS_MASK   	(0xFF)
+#define     AUDIO_CHANNELS             				(8)
+#define     AUDIO_CHANNELS_MASK        				(0xFF)
+#define     SPDIF_DMA_CHANNELS         				(2)
+#define     SPDIF_DMA_CHANNEL_MASK     				(0x3)
+#define     MCAMP_HALF_SPORT_AUDIO_CHANNEL  		(4)
+#define     MCAMP_HALF_SPORT_AUDIO_CHANNEL_MASK   	(0xFF)
+
+// SPORT double buffers for multichannel amp
+#pragma alignment_region(64)
+#pragma section("seg_l1_block1_bsz_data", ZERO_INIT)
+int mcamp_ch0_to_ch3_sport_buffer_0[MCAMP_HALF_SPORT_AUDIO_CHANNEL * AUDIO_BLOCK_SIZE];
+#pragma section("seg_l1_block1_bsz_data", ZERO_INIT)
+int mcamp_ch0_to_ch3_sport_buffer_1[MCAMP_HALF_SPORT_AUDIO_CHANNEL * AUDIO_BLOCK_SIZE];
+#pragma section("seg_l1_block1_bsz_data", ZERO_INIT)
+int mcamp_ch4_to_ch7_sport_buffer_0[MCAMP_HALF_SPORT_AUDIO_CHANNEL * AUDIO_BLOCK_SIZE];
+#pragma section("seg_l1_block1_bsz_data", ZERO_INIT)
+int mcamp_ch4_to_ch7_sport_buffer_1[MCAMP_HALF_SPORT_AUDIO_CHANNEL * AUDIO_BLOCK_SIZE];
+#pragma section("seg_l1_block1_bsz_data", ZERO_INIT)
+int mcamp_ch8_to_ch11_sport_buffer_0[MCAMP_HALF_SPORT_AUDIO_CHANNEL * AUDIO_BLOCK_SIZE];
+#pragma section("seg_l1_block1_bsz_data", ZERO_INIT)
+int mcamp_ch8_to_ch11_sport_buffer_1[MCAMP_HALF_SPORT_AUDIO_CHANNEL * AUDIO_BLOCK_SIZE];
+#pragma section("seg_l1_block1_bsz_data", ZERO_INIT)
+int mcamp_ch12_to_ch15_sport_buffer_0[MCAMP_HALF_SPORT_AUDIO_CHANNEL * AUDIO_BLOCK_SIZE];
+#pragma section("seg_l1_block1_bsz_data", ZERO_INIT)
+int mcamp_ch12_to_ch15_sport_buffer_1[MCAMP_HALF_SPORT_AUDIO_CHANNEL * AUDIO_BLOCK_SIZE];
+#pragma section("seg_l1_block1_bsz_data", ZERO_INIT)
+int mcamp_ch16_to_ch19_sport_buffer_0[MCAMP_HALF_SPORT_AUDIO_CHANNEL * AUDIO_BLOCK_SIZE];
+#pragma section("seg_l1_block1_bsz_data", ZERO_INIT)
+int mcamp_ch16_to_ch19_sport_buffer_1[MCAMP_HALF_SPORT_AUDIO_CHANNEL * AUDIO_BLOCK_SIZE];
+#pragma alignment_region_end
+
+// Interleaved output buffers for multichannel amp
+float mcamp_ch0_to_ch3_out[MCAMP_HALF_SPORT_AUDIO_CHANNEL * AUDIO_BLOCK_SIZE] = {0};
+float mcamp_ch4_to_ch7_out[MCAMP_HALF_SPORT_AUDIO_CHANNEL * AUDIO_BLOCK_SIZE] = {0};
+float mcamp_ch8_to_ch11_out[MCAMP_HALF_SPORT_AUDIO_CHANNEL * AUDIO_BLOCK_SIZE] = {0};
+float mcamp_ch12_to_ch15_out[MCAMP_HALF_SPORT_AUDIO_CHANNEL * AUDIO_BLOCK_SIZE] = {0};
+float mcamp_ch16_to_ch19_out[MCAMP_HALF_SPORT_AUDIO_CHANNEL * AUDIO_BLOCK_SIZE] = {0};
+
+// Deinterleaved channel output buffers
+float *mcamp_ch0 = mcamp_ch0_to_ch3_out + AUDIO_BLOCK_SIZE * 0;
+float *mcamp_ch1 = mcamp_ch0_to_ch3_out + AUDIO_BLOCK_SIZE * 2;
+float *mcamp_ch2 = mcamp_ch0_to_ch3_out + AUDIO_BLOCK_SIZE * 1;
+float *mcamp_ch3 = mcamp_ch0_to_ch3_out + AUDIO_BLOCK_SIZE * 3;
+
+float *mcamp_ch4 = mcamp_ch4_to_ch7_out + AUDIO_BLOCK_SIZE * 0;
+float *mcamp_ch5 = mcamp_ch4_to_ch7_out + AUDIO_BLOCK_SIZE * 2;
+float *mcamp_ch6 = mcamp_ch4_to_ch7_out + AUDIO_BLOCK_SIZE * 1;
+float *mcamp_ch7 = mcamp_ch4_to_ch7_out + AUDIO_BLOCK_SIZE * 3;
+
+float *mcamp_ch8 = mcamp_ch8_to_ch11_out + AUDIO_BLOCK_SIZE * 0;
+float *mcamp_ch9 = mcamp_ch8_to_ch11_out + AUDIO_BLOCK_SIZE * 2;
+float *mcamp_ch10 = mcamp_ch8_to_ch11_out + AUDIO_BLOCK_SIZE * 1;
+float *mcamp_ch11 = mcamp_ch8_to_ch11_out + AUDIO_BLOCK_SIZE * 3;
+
+float *mcamp_ch12 = mcamp_ch12_to_ch15_out + AUDIO_BLOCK_SIZE * 0;
+float *mcamp_ch13 = mcamp_ch12_to_ch15_out + AUDIO_BLOCK_SIZE * 2;
+float *mcamp_ch14 = mcamp_ch12_to_ch15_out + AUDIO_BLOCK_SIZE * 1;
+float *mcamp_ch15 = mcamp_ch12_to_ch15_out + AUDIO_BLOCK_SIZE * 3;
+
+float *mcamp_ch16 = mcamp_ch16_to_ch19_out + AUDIO_BLOCK_SIZE * 0;
+float *mcamp_ch17 = mcamp_ch16_to_ch19_out + AUDIO_BLOCK_SIZE * 2;
+float *mcamp_ch18 = mcamp_ch16_to_ch19_out + AUDIO_BLOCK_SIZE * 1;
+float *mcamp_ch19 = mcamp_ch16_to_ch19_out + AUDIO_BLOCK_SIZE * 3;
 
 #pragma alignment_region(64)
-
-// MA12040P Sport 4 DMA buffers
-#pragma section("seg_l1_block1_bsz_data", ZERO_INIT)
-int sport4_dma_rx_0_buffer[MA12040P_AUDIO_CHANNELS * AUDIO_BLOCK_SIZE];
-#pragma section("seg_l1_block1_bsz_data", ZERO_INIT)
-int sport4_dma_rx_1_buffer[MA12040P_AUDIO_CHANNELS * AUDIO_BLOCK_SIZE];
-#pragma section("seg_l1_block1_bsz_data", ZERO_INIT)
-int sport4_dma_tx_0_buffer[MA12040P_AUDIO_CHANNELS * AUDIO_BLOCK_SIZE];
-#pragma section("seg_l1_block1_bsz_data", ZERO_INIT)
-int sport4_dma_tx_1_buffer[MA12040P_AUDIO_CHANNELS * AUDIO_BLOCK_SIZE];
 
 // ADAU1761 Fixed-point (raw ADC/DAC data) DMA buffers for ping-pong / double-buffered DMA
 #pragma section("seg_l1_block1_bsz_data", ZERO_INIT)
@@ -118,9 +165,6 @@ float a2b_audiochannels_in[AUDIO_CHANNELS * AUDIO_BLOCK_SIZE] = {0};         // 
 float spdif_audiochannels_out[SPDIF_DMA_CHANNELS * AUDIO_BLOCK_SIZE] = {0};    // Audio to SPDIF TX
 float spdif_audiochannels_in[SPDIF_DMA_CHANNELS * AUDIO_BLOCK_SIZE] = {0};      // Audio from SPDIF RX
 
-float ma12040p_audiochannels_out_SPTA[MA12040P_AUDIO_CHANNELS * AUDIO_BLOCK_SIZE] = {0};    // Audio to MA12040P
-float ma12040p_audiochannels_out_SPTB[MA12040P_AUDIO_CHANNELS * AUDIO_BLOCK_SIZE] = {0};    // Audio to MA12040P
-
 #if (USE_BOTH_CORES_TO_PROCESS_AUDIO)
 float audiochannels_from_sharc_core2[AUDIO_CHANNELS * AUDIO_BLOCK_SIZE] = {0};      // Audio from SHARC Core 2
 float audiochannels_to_sharc_core2[AUDIO_CHANNELS * AUDIO_BLOCK_SIZE] = {0};          // Audio from SHARC Core 2
@@ -164,17 +208,6 @@ float *audiochannel_spdif_0_right_in = spdif_audiochannels_in + AUDIO_BLOCK_SIZE
 // SPDIF digital audio out buffers
 float *audiochannel_spdif_0_left_out  = spdif_audiochannels_out + AUDIO_BLOCK_SIZE * 0;
 float *audiochannel_spdif_0_right_out = spdif_audiochannels_out + AUDIO_BLOCK_SIZE * 1;
-
-// MA12040P Outputs
-float *audiochannel_ma12040p_0_left_out  = ma12040p_audiochannels_out_SPTA + AUDIO_BLOCK_SIZE * 0;
-float *audiochannel_ma12040p_1_left_out  = ma12040p_audiochannels_out_SPTA + AUDIO_BLOCK_SIZE * 1;
-float *audiochannel_ma12040p_0_right_out = ma12040p_audiochannels_out_SPTA + AUDIO_BLOCK_SIZE * 2;
-float *audiochannel_ma12040p_1_right_out = ma12040p_audiochannels_out_SPTA + AUDIO_BLOCK_SIZE * 3;
-
-float *audiochannel_ma12040p_2_left_out  = ma12040p_audiochannels_out_SPTB + AUDIO_BLOCK_SIZE * 0;
-float *audiochannel_ma12040p_3_left_out  = ma12040p_audiochannels_out_SPTB + AUDIO_BLOCK_SIZE * 1;
-float *audiochannel_ma12040p_2_right_out = ma12040p_audiochannels_out_SPTB + AUDIO_BLOCK_SIZE * 2;
-float *audiochannel_ma12040p_3_right_out = ma12040p_audiochannels_out_SPTB + AUDIO_BLOCK_SIZE * 3;
 
 // A2B Audio In (from the A2B bus)
 float *audiochannel_a2b_0_left_in  = a2b_audiochannels_in + AUDIO_BLOCK_SIZE * 0;
@@ -265,17 +298,87 @@ uint32_t audio_blocks_new_events_count = 0;
 uint64_t cycle_cntr;
 
 // DMA & SPORT Configuration for SPORT 4 (MA12040P connection)
-SPORT_DMA_CONFIG SPR4_MA12040P_2CH_Config = {
+SPORT_DMA_CONFIG SPR4_MCAMP_CH_Config = {
 
     .sport_number           = SPORT4,
 
-    .dma_audio_channels   	= MA12040P_AUDIO_CHANNELS,
+    .dma_audio_channels   	= MCAMP_HALF_SPORT_AUDIO_CHANNEL,
     .dma_audio_block_size 	= AUDIO_BLOCK_SIZE,
 
-    .dma_tx_buffer_0     	= sport4_dma_tx_0_buffer,
-    .dma_tx_buffer_1     	= sport4_dma_tx_1_buffer,
-    .dma_rx_buffer_0     	= sport4_dma_rx_0_buffer,
-    .dma_rx_buffer_1     	= sport4_dma_rx_1_buffer,
+    .dma_tx_buffer_0     	= mcamp_ch0_to_ch3_sport_buffer_0,
+    .dma_tx_buffer_1     	= mcamp_ch0_to_ch3_sport_buffer_1,
+    .dma_rx_buffer_0     	= mcamp_ch4_to_ch7_sport_buffer_0,
+    .dma_rx_buffer_1     	= mcamp_ch4_to_ch7_sport_buffer_1,
+
+     // SPORT A Transmit
+    .pREG_SPORT_CTL_A    	= (0x1f << BITP_SPORT_CTL_A_SLEN) |		// 32-bit data word
+							  BITM_SPORT_CTL_A_CKRE |
+    						  BITM_SPORT_CTL_A_OPMODE |   	// I2S mode
+							  BITM_SPORT_CTL_A_LAFS |       // Left-Justified Mode
+							  BITM_SPORT_CTL_A_SPTRAN |     // SPORT is transmitter
+							  0,
+
+    .pREG_SPORT_MCTL_A  	= 0,
+
+    // SPORT B Receive
+	.pREG_SPORT_CTL_B    	= (0x1f << BITP_SPORT_CTL_B_SLEN) |		// 32-bit data word
+							  BITM_SPORT_CTL_B_CKRE |
+							  BITM_SPORT_CTL_B_OPMODE |   	// I2S mode
+							  BITM_SPORT_CTL_B_LAFS |       // Left-Justified Mode
+							  BITM_SPORT_CTL_B_SPTRAN |     // SPORT is transmitter
+							  0,
+
+    .pREG_SPORT_MCTL_B  	= 0,
+
+    .generates_interrupts 	= false,
+};
+
+SPORT_DMA_CONFIG SPR5_MCAMP_CH_Config = {
+
+    .sport_number           = SPORT5,
+
+    .dma_audio_channels   	= MCAMP_HALF_SPORT_AUDIO_CHANNEL,
+    .dma_audio_block_size 	= AUDIO_BLOCK_SIZE,
+
+    .dma_tx_buffer_0     	= mcamp_ch8_to_ch11_sport_buffer_0,
+    .dma_tx_buffer_1     	= mcamp_ch8_to_ch11_sport_buffer_1,
+    .dma_rx_buffer_0     	= mcamp_ch12_to_ch15_sport_buffer_0,
+    .dma_rx_buffer_1     	= mcamp_ch12_to_ch15_sport_buffer_1,
+
+     // SPORT A Transmit
+    .pREG_SPORT_CTL_A    	= (0x1f << BITP_SPORT_CTL_A_SLEN) |		// 32-bit data word
+							  BITM_SPORT_CTL_A_CKRE |
+    						  BITM_SPORT_CTL_A_OPMODE |   	// I2S mode
+							  BITM_SPORT_CTL_A_LAFS |       // Left-Justified Mode
+							  BITM_SPORT_CTL_A_SPTRAN |     // SPORT is transmitter
+							  0,
+
+    .pREG_SPORT_MCTL_A  	= 0,
+
+    // SPORT B Receive
+	.pREG_SPORT_CTL_B    	= (0x1f << BITP_SPORT_CTL_B_SLEN) |		// 32-bit data word
+							  BITM_SPORT_CTL_B_CKRE |
+							  BITM_SPORT_CTL_B_OPMODE |   	// I2S mode
+							  BITM_SPORT_CTL_B_LAFS |       // Left-Justified Mode
+							  BITM_SPORT_CTL_B_SPTRAN |     // SPORT is transmitter
+							  0,
+
+    .pREG_SPORT_MCTL_B  	= 0,
+
+    .generates_interrupts 	= false,
+};
+
+SPORT_DMA_CONFIG SPR6_MCAMP_CH_Config = {
+
+    .sport_number           = SPORT6,
+
+    .dma_audio_channels   	= MCAMP_HALF_SPORT_AUDIO_CHANNEL,
+    .dma_audio_block_size 	= AUDIO_BLOCK_SIZE,
+
+    .dma_tx_buffer_0     	= mcamp_ch16_to_ch19_sport_buffer_0,
+    .dma_tx_buffer_1     	= mcamp_ch16_to_ch19_sport_buffer_1,
+//    .dma_rx_buffer_0     	= mcamp_ch4_to_ch7_sport_buffer_0,
+//    .dma_rx_buffer_1     	= mcamp_ch4_to_ch7_sport_buffer_1,
 
      // SPORT A Transmit
     .pREG_SPORT_CTL_A    	= (0x1f << BITP_SPORT_CTL_A_SLEN) |		// 32-bit data word
@@ -572,9 +675,12 @@ void audioframework_dma_handler(uint32_t iid, void *arg){
         audioflow_float_to_fixed(spdif_audiochannels_out, sport2_dma_tx_0_buffer, SPDIF_DMA_CHANNELS * AUDIO_BLOCK_SIZE);
         audioflow_fixed_to_float(sport2_dma_rx_0_buffer, spdif_audiochannels_in, SPDIF_DMA_CHANNELS * AUDIO_BLOCK_SIZE);
 
-        // Audio to MA12049P
-		audioflow_float_to_fixed(ma12040p_audiochannels_out_SPTA, sport4_dma_tx_0_buffer, MA12040P_AUDIO_CHANNELS * AUDIO_BLOCK_SIZE);
-		audioflow_float_to_fixed(ma12040p_audiochannels_out_SPTB, sport4_dma_rx_0_buffer, MA12040P_AUDIO_CHANNELS * AUDIO_BLOCK_SIZE);
+        // Audio to Multichannel Amp
+		audioflow_float_to_fixed(mcamp_ch0_to_ch3_out, mcamp_ch0_to_ch3_sport_buffer_0, MCAMP_HALF_SPORT_AUDIO_CHANNEL * AUDIO_BLOCK_SIZE);
+		audioflow_float_to_fixed(mcamp_ch4_to_ch7_out, mcamp_ch4_to_ch7_sport_buffer_0, MCAMP_HALF_SPORT_AUDIO_CHANNEL * AUDIO_BLOCK_SIZE);
+		audioflow_float_to_fixed(mcamp_ch8_to_ch11_out, mcamp_ch8_to_ch11_sport_buffer_0, MCAMP_HALF_SPORT_AUDIO_CHANNEL * AUDIO_BLOCK_SIZE);
+		audioflow_float_to_fixed(mcamp_ch12_to_ch15_out, mcamp_ch12_to_ch15_sport_buffer_0, MCAMP_HALF_SPORT_AUDIO_CHANNEL * AUDIO_BLOCK_SIZE);
+		audioflow_float_to_fixed(mcamp_ch16_to_ch19_out, mcamp_ch16_to_ch19_sport_buffer_0, MCAMP_HALF_SPORT_AUDIO_CHANNEL * AUDIO_BLOCK_SIZE);
     }
     else
     {
@@ -590,9 +696,12 @@ void audioframework_dma_handler(uint32_t iid, void *arg){
         audioflow_float_to_fixed(spdif_audiochannels_out, sport2_dma_tx_1_buffer, SPDIF_DMA_CHANNELS * AUDIO_BLOCK_SIZE);
         audioflow_fixed_to_float(sport2_dma_rx_1_buffer, spdif_audiochannels_in, SPDIF_DMA_CHANNELS * AUDIO_BLOCK_SIZE);
 
-        // Audio to MA12049P
-		audioflow_float_to_fixed(ma12040p_audiochannels_out_SPTA, sport4_dma_tx_1_buffer, MA12040P_AUDIO_CHANNELS * AUDIO_BLOCK_SIZE);
-		audioflow_float_to_fixed(ma12040p_audiochannels_out_SPTB, sport4_dma_rx_1_buffer, MA12040P_AUDIO_CHANNELS * AUDIO_BLOCK_SIZE);
+        // Audio to Multichannel Amp
+		audioflow_float_to_fixed(mcamp_ch0_to_ch3_out, mcamp_ch0_to_ch3_sport_buffer_1, MCAMP_HALF_SPORT_AUDIO_CHANNEL * AUDIO_BLOCK_SIZE);
+		audioflow_float_to_fixed(mcamp_ch4_to_ch7_out, mcamp_ch4_to_ch7_sport_buffer_1, MCAMP_HALF_SPORT_AUDIO_CHANNEL * AUDIO_BLOCK_SIZE);
+		audioflow_float_to_fixed(mcamp_ch8_to_ch11_out, mcamp_ch8_to_ch11_sport_buffer_1, MCAMP_HALF_SPORT_AUDIO_CHANNEL * AUDIO_BLOCK_SIZE);
+		audioflow_float_to_fixed(mcamp_ch12_to_ch15_out, mcamp_ch12_to_ch15_sport_buffer_1, MCAMP_HALF_SPORT_AUDIO_CHANNEL * AUDIO_BLOCK_SIZE);
+		audioflow_float_to_fixed(mcamp_ch16_to_ch19_out, mcamp_ch16_to_ch19_sport_buffer_1, MCAMP_HALF_SPORT_AUDIO_CHANNEL * AUDIO_BLOCK_SIZE);
     }
 
     #if (USE_BOTH_CORES_TO_PROCESS_AUDIO)
@@ -769,7 +878,11 @@ void audioframework_initialize() {
     audioflow_init_sport_dma(&SPR0_ADAU1761_8CH_Config);
     audioflow_init_sport_dma(&SPR1_A2B_8CH_Config);
     audioflow_init_sport_dma(&SPR2_spdif_2CH_Config);
-    audioflow_init_sport_dma(&SPR4_MA12040P_2CH_Config);
+
+    // enable multichannel amp SPORTS
+    audioflow_init_sport_dma(&SPR4_MCAMP_CH_Config);
+    audioflow_init_sport_dma(&SPR5_MCAMP_CH_Config);
+    audioflow_init_sport_dma(&SPR6_MCAMP_CH_Config);
 
     // Set up interrupt handler for our audio callback (set at a lower interrupt priority)
     adi_int_InstallHandler(INTR_TRU0_INT4, (ADI_INT_HANDLER_PTR)audioframework_audiocallback_handler, NULL, true);
@@ -806,10 +919,6 @@ void audioframework_start() {
     SPORT_DMA_ENABLE(4, 1);
     SPORT_DMA_ENABLE(5, 1);
 
-    // Enable RX and TX DMAs for SPORT4 for MA12040P
-	SPORT_DMA_ENABLE(10, 1);
-	SPORT_DMA_ENABLE(11, 1);
-
     // Enable SPORT0, SPORT1 and SPORT2
     SPORT_ENABLE(2, A, 0, 1);
     SPORT_ENABLE(2, B, 0, 1);
@@ -818,9 +927,23 @@ void audioframework_start() {
     SPORT_ENABLE(0, A, 0, 1);
     SPORT_ENABLE(0, B, 0, 1);
 
-    // Enable SPORT4 for MA12040P
-	SPORT_ENABLE(4, A, 1, 1);
-	SPORT_ENABLE(4, B, 1, 1);
+    /*
+     * Multichannel Amp
+     */
+
+    // Enable DMA for SPORT's
+	SPORT_DMA_ENABLE(10, 1); 	// SPORT4 A
+	SPORT_DMA_ENABLE(11, 1);	// SPORT4 B
+	SPORT_DMA_ENABLE(12, 1); 	// SPORT5 A
+	SPORT_DMA_ENABLE(13, 1);	// SPORT5 B
+	SPORT_DMA_ENABLE(14, 1); 	// SPORT6 A
+
+    // Enable primary and secondary SPORT channels
+	SPORT_ENABLE(4, A, 1, 1); 	// SPORT4 A
+	SPORT_ENABLE(4, B, 1, 1);	// SPORT4 B
+	SPORT_ENABLE(5, A, 1, 1); 	// SPORT5 A
+	SPORT_ENABLE(5, B, 1, 1);	// SPORT5 B
+	SPORT_ENABLE(6, A, 1, 1); 	// SPORT6 A
 }
 
 #endif  // AUDIO_FRAMEWORK_8CH_SAM_AND_AUDIOPROJ_FIN

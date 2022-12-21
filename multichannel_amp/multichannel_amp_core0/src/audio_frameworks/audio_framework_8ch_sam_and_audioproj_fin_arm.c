@@ -368,14 +368,11 @@ void audioframework_initialize(void) {
 
     log_event(EVENT_INFO, "  ADAU1761 updated gain settings for the Audio Project Fin being used");
 
-    log_event(EVENT_INFO, "Configuring the Multichannel Amplifier");
-
 	/*
 	 *  Initialise multichannel amplifier
 	 */
     log_event(EVENT_INFO, "Configuring the Multichannel Amplifier");
 	sru_config_multichannel_amps();
-	McAmp_Initialise();
 
     log_event(EVENT_INFO, "  Complete");
     // Set up SRU to bypass the processor and route I2S from A2B to the ADAU1761

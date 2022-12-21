@@ -134,8 +134,12 @@ int main(void){
         continue;
     log_event(EVENT_INFO, "Audio DMA is running!");
 
-    // unmute mulichannel amps
-    McAmp_Unmute();
+    // enable mulichannel amps
+    McAmp_Enable();
+
+    // check for devices on each bus
+    McAmp_Initialise();
+    McAmp_Device_Check();
 
     // Wait for audio block interrupts
     while (1) {
