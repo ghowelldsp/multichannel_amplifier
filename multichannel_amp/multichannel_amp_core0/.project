@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>multichannel_amp_core0</name>
+	<name>ctc_array_core0</name>
 	<comment></comment>
 	<projects>
-		<project>multichannel_amp_core1</project>
-		<project>multichannel_amp_core2</project>
+		<project>ctc_array_core1</project>
+		<project>ctc_array_core2</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
@@ -43,23 +43,27 @@
 		<link>
 			<name>src/common</name>
 			<type>2</type>
-			<locationURI>PARENT-1-PROJECT_LOC/common</locationURI>
+			<locationURI>copy_PARENT1/common</locationURI>
 		</link>
 		<link>
 			<name>src/drivers</name>
 			<type>2</type>
-			<locationURI>PARENT-1-PROJECT_LOC/drivers</locationURI>
+			<locationURI>copy_PARENT1/drivers</locationURI>
 		</link>
 		<link>
 			<name>src/multichannel_amp_drivers</name>
 			<type>2</type>
-			<locationURI>PARENT-1-PROJECT_LOC/multichannel_amp_drivers</locationURI>
+			<locationURI>copy_PARENT1/multichannel_amp_drivers</locationURI>
 		</link>
 	</linkedResources>
 	<variableList>
 		<variable>
 			<name>copy_PARENT</name>
 			<value>$%7BPARENT-1-PROJECT_LOC%7D/framework</value>
+		</variable>
+		<variable>
+			<name>copy_PARENT1</name>
+			<value>$%7BPARENT-3-PROJECT_LOC%7D/multichannel_amplifier/multichannel_amplifier/multichannel_amp</value>
 		</variable>
 	</variableList>
 </projectDescription>

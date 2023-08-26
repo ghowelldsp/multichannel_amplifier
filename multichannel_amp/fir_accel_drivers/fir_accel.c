@@ -78,6 +78,9 @@ ADI_FIR_ACC_RESULT fir_accel_init(ADI_FIR_ACC_BUFF *pBuffers,
 	return ADI_FIR_ACC_RESULT_SUCCESS;
 }
 
+
+#include "drivers/bm_event_logging_driver/bm_event_logging.h"
+
 /**
  * @brief 	Enables the fir accelerator interrupt
  *
@@ -89,7 +92,8 @@ ADI_FIR_ACC_RESULT fira_add_input_data(ADI_FIR_ACC_CONFIG *pFirAccConfig, ADI_FI
 {
 	uint32_t startIdx, endIdx;
 	uint32_t diff = 0;
-	float *pXnIdx;
+
+	float tempVal;
 
 	for (int i=0; i<FIR_ACC_NUM_CHANNELS; i++)
 	{
@@ -102,17 +106,15 @@ ADI_FIR_ACC_RESULT fira_add_input_data(ADI_FIR_ACC_CONFIG *pFirAccConfig, ADI_FI
 		{
 			diff = startIdx - endIdx;
 			startIdx = ((uint32_t)pFirAccConfig[i].pTCB->pInputBase) + diff;
-
-			pXnIdx = (float *)pFirAccConfig[i].pBuffers->pInputBuff + diff;
 		}
 		else
 		{
 			diff = startIdx - (uint32_t)pFirAccConfig[i].pTCB->pInputBase;
-			pXnIdx = (float *)pFirAccConfig[i].pBuffers->pInputBuff + diff;
 		}
 
+		float *pXnIdx = (float*)pFirAccConfig[i].pBuffers->pInputBuff + diff;
 		float *pInputBase = (float*)pFirAccConfig[i].pBuffers->pInputBuff;
-		float *pInputData = (float*)pFirInputData[i].pInputData;
+		float *pInputData = (float*)pFirInputData[0].pInputData;
 
 		// determine if x[n] will run over end index limit
 		if (startIdx+FIR_ACC_AUDIO_BLOCK_SIZE > endIdx)
@@ -128,6 +130,7 @@ ADI_FIR_ACC_RESULT fira_add_input_data(ADI_FIR_ACC_CONFIG *pFirAccConfig, ADI_FI
 				}
 				else
 				{
+
 					pXnIdx[idx] = pInputData[idx];
 				}
 			}

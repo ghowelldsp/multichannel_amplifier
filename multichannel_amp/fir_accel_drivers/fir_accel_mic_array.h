@@ -24,7 +24,8 @@ extern "C" {
 /*------------------- EXPORTED VARIABLES -------------------------*/
 
 extern ADI_FIR_ACC_CONFIG *pfirAccConfig1;
-extern ADI_FIR_ACC_CONFIG *pfirAccConfig2;
+
+extern ADI_FIR_ACC_IN_DATA *pFirInputData;
 
 /*------------------- GLOBAL FUNCTION PROTOTYPES -----------------*/
 

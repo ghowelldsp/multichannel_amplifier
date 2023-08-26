@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>multichannel_amp_core2</name>
+	<name>ctc_array_core2</name>
 	<comment></comment>
 	<projects>
-		<project>multichannel_amp_core0</project>
-		<project>multichannel_amp_core1</project>
+		<project>ctc_array_core0</project>
+		<project>ctc_array_core1</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
@@ -42,43 +42,47 @@
 		<link>
 			<name>src/audio_processing</name>
 			<type>2</type>
-			<locationURI>PARENT-1-PROJECT_LOC/audio_processing</locationURI>
+			<locationURI>copy_PARENT1/audio_processing</locationURI>
 		</link>
 		<link>
 			<name>src/common</name>
 			<type>2</type>
-			<locationURI>PARENT-1-PROJECT_LOC/common</locationURI>
+			<locationURI>copy_PARENT1/common</locationURI>
 		</link>
 		<link>
 			<name>src/drivers/bm_audio_flow_driver</name>
 			<type>2</type>
-			<locationURI>PARENT-1-PROJECT_LOC/drivers/bm_audio_flow_driver</locationURI>
+			<locationURI>copy_PARENT1/drivers/bm_audio_flow_driver</locationURI>
 		</link>
 		<link>
 			<name>src/drivers/bm_event_logging_driver</name>
 			<type>2</type>
-			<locationURI>PARENT-1-PROJECT_LOC/drivers/bm_event_logging_driver</locationURI>
+			<locationURI>copy_PARENT1/drivers/bm_event_logging_driver</locationURI>
 		</link>
 		<link>
 			<name>src/drivers/bm_gpio_driver</name>
 			<type>2</type>
-			<locationURI>PARENT-1-PROJECT_LOC/drivers/bm_gpio_driver</locationURI>
+			<locationURI>copy_PARENT1/drivers/bm_gpio_driver</locationURI>
 		</link>
 		<link>
 			<name>src/drivers/bm_sysctrl_driver</name>
 			<type>2</type>
-			<locationURI>PARENT-1-PROJECT_LOC/drivers/bm_sysctrl_driver</locationURI>
+			<locationURI>copy_PARENT1/drivers/bm_sysctrl_driver</locationURI>
 		</link>
 		<link>
 			<name>src/drivers/bm_uart_driver</name>
 			<type>2</type>
-			<locationURI>PARENT-1-PROJECT_LOC/drivers/bm_uart_driver</locationURI>
+			<locationURI>copy_PARENT1/drivers/bm_uart_driver</locationURI>
 		</link>
 	</linkedResources>
 	<variableList>
 		<variable>
 			<name>copy_PARENT</name>
 			<value>$%7BPARENT-1-PROJECT_LOC%7D/framework</value>
+		</variable>
+		<variable>
+			<name>copy_PARENT1</name>
+			<value>$%7BPARENT-3-PROJECT_LOC%7D/multichannel_amplifier/multichannel_amplifier/multichannel_amp</value>
 		</variable>
 	</variableList>
 </projectDescription>

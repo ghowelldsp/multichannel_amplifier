@@ -224,22 +224,10 @@ void processaudio_setup(void) {
  * is 300,000 cycles or 300,000/32 or 9,375 per sample of audio
  */
 
-//float firInput[128] =
-//{
-//	#include "fir_accel_drivers/firInput.dat"
-//};
-
-ADI_FIR_ACC_IN_DATA firInputData[2] =
+float firInput[128] =
 {
-	{
-		.pInputData = (float*)audiochannel_spdif_0_left_in,
-	},
-	{
-		.pInputData = (float*)audiochannel_spdif_0_right_in,
-	}
+	#include "fir_accel_drivers/firInput.dat"
 };
-
-int inc = 0;
 
 // When debugging audio algorithms, helpful to comment out this pragma for more linear single stepping.
 //#pragma optimize_for_speed
@@ -264,19 +252,10 @@ void processaudio_callback(void) {
 
 	}
 
-//	int mod = 32*(inc++ % 4);
-//
-//	ADI_FIR_ACC_IN_DATA firInputDataTmp[2] =
-//	{
-//		{
-//			.pInputData = (float*)firInput + mod,
-//		},
-//		{
-//			.pInputData = (float*)firInput + mod,
-//		}
-//	};
+	pFirInputData[0].pInputData = (void*)firInput;
+	pFirInputData[1].pInputData = (void*)firInput;
 
-	fir_accelerator_run(pfirAccConfig1, firInputData);
+	fir_accelerator_run(pfirAccConfig1, pFirInputData);
 
 //	__builtin_circptr
 

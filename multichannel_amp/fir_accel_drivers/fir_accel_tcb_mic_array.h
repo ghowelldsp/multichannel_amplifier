@@ -24,7 +24,7 @@ extern "C" {
 
 #define FIR_ACC_AUDIO_BLOCK_SIZE 			32u
 
-#define FIR_ACC_NUM_CHANNELS 				2u
+#define FIR_ACC_NUM_CHANNELS 				20u
 
 #define FIR_ACC_TAP_LENGTH 					11u
 #define FIR_ACC_WINDOW_SIZE 				FIR_ACC_AUDIO_BLOCK_SIZE
